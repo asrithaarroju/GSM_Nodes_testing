@@ -105,6 +105,7 @@
             const humidity = filteredFeeds.map((feed) =>
               parseFloat(feed.field4)
             );
+            const co2 = filteredFeeds.map((feed) => parseFloat(feed.field5));
 
             // Function to pad single-digit numbers with leading zeros
             function pad2(number) {
@@ -136,12 +137,18 @@
               mode: "markers+lines",
               name: "Humidity(%)",
             };
+            const trace_co2 = {
+              x: timestamps,
+              y: co2,
+              mode: "markers+lines",
+              name: "CO2(ppm)",
+            };
 
             // Create layout for the plot
             const layout = {
               title: `Outdoor Air Quality Data - ${location}`,
               xaxis: { title: "Timestamp", type: "category" },
-              yaxis: { title: "Values", range: [0, 250], tick0: 0, dtick: 25 },
+              yaxis: { title: "Values", range: [0, 750], tick0: 0, dtick: 25 },
               showlegend: true,
               height: 750,
               width: 1050,
@@ -165,7 +172,13 @@
             // Combine traces and layout, and plot the chart
             Plotly.newPlot(
               plotId,
-              [trace_pm25, trace_pm10, trace_temperature, trace_humidity],
+              [
+                trace_pm25,
+                trace_pm10,
+                trace_temperature,
+                trace_humidity,
+                trace_co2,
+              ],
               layout
             );
 
